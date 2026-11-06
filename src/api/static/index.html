@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-type="software" data-radius="sharp">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="page-type" content="software">
+  <meta name="site-kind" content="software">
+  <title>Sentinela SP — Mapa de Alertas Urbanos</title>
+  
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <!-- Design System CSS -->
+  <link rel="stylesheet" href="/static/system.css">
+</head>
+<body>
+
+  <!-- Header Superior Fixo (72px) -->
+  <header class="nav">
+    <div class="brand">
+      <span class="brand-badge">ED Avançadas</span>
+      <span class="brand-title">Sentinela SP</span>
+      <span class="brand-city">São Paulo &bull; Mapeamento Colaborativo</span>
+    </div>
+
+    <div class="nav-actions">
+      <!-- Relógio Virtual do Sistema (Simulação Cronológica) -->
+      <div class="virtual-clock" id="virtual-clock">
+        <span class="clock-dot"></span>
+        <span id="clock-display">2026-11-05 22:00:00 UTC</span>
+      </div>
+
+      <!-- Controles de Time Travel para Apresentação -->
+      <button class="btn btn-secondary" id="btn-time-1h" title="Avançar relógio em 1 hora para observar decaimento">
+        Avançar +1h
+      </button>
+      <button class="btn btn-secondary" id="btn-time-6h" title="Avançar relógio em 6 horas">
+        Avançar +6h
+      </button>
+      <button class="btn btn-cyan" id="btn-inject-seed" title="Injetar 500 incidentes para teste de carga na Quadtree">
+        +500 Incidentes
+      </button>
+      <button class="btn btn-secondary" id="btn-reset-sim" title="Resetar simulação para o estado inicial">
+        Resetar
+      </button>
+      <button class="btn btn-primary" id="btn-open-report">
+        + Reportar Incidente
+      </button>
+    </div>
+  </header>
+
+  <!-- Workspace Principal (App-Frame) -->
+  <main class="app-frame">
+    <!-- Viewport do Mapa Leaflet -->
+    <div id="map-viewport">
+      <!-- Controles Flutuantes de Camadas Visuais -->
+      <div class="map-layer-controls">
+        <label class="layer-toggle">
+          <input type="checkbox" id="toggle-incidents" checked>
+          <span>Incidentes Ativos</span>
+        </label>
+        <label class="layer-toggle toggle-cyan">
+          <input type="checkbox" id="toggle-quadtree" checked>
+          <span>Quadrantes Quadtree</span>
+        </label>
+        <label class="layer-toggle">
+          <input type="checkbox" id="toggle-redzones" checked>
+          <span>Zonas Vermelhas (BFS)</span>
+        </label>
+        <div style="border-left: 1px solid var(--line); margin: 0 4px;"></div>
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <span style="font-size: 12px; color: var(--muted);">Raio de Busca:</span>
+          <select id="select-radius" class="form-control" style="width: auto; padding: 2px 6px; font-size: 12px;">
+            <option value="1000">1.0 km</option>
+            <option value="2000" selected>2.0 km</option>
+            <option value="3500">3.5 km</option>
+            <option value="5000">5.0 km</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Painel Lateral de Telemetria e Inspeção das Estruturas -->
+    <aside class="telemetry-sidebar">
+      
+      <!-- 1. Comparador ao Vivo: Quadtree O(log n) vs Lista Linear O(n) -->
+      <section class="panel-card" style="border-color: rgba(46, 144, 250, 0.4);">
+        <div class="panel-header">
+          <span class="panel-title" style="color: var(--quadtree-cyan);">
+            Comparador de Busca
+          </span>
+          <span class="panel-tag">Clique no Mapa</span>
+        </div>
+        <p style="font-size: 12px; color: var(--muted); margin-bottom: 8px;">
+          Clique em qualquer ponto do mapa para disparar a busca por raio e medir o ganho algorítmico da Quadtree.
+        </p>
+        <div class="comparison-grid">
+          <div class="metric-box">
+            <div class="metric-label">Quadtree O(log n)</div>
+            <div class="metric-value cyan" id="metric-quad-calcs">0 calcs</div>
+            <div style="font-size: 11px; color: var(--muted); margin-top: 4px;" id="metric-quad-ms">0.00 ms</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">Lista Linear O(n)</div>
+            <div class="metric-value amber" id="metric-linear-calcs">0 calcs</div>
+            <div style="font-size: 11px; color: var(--muted); margin-top: 4px;" id="metric-linear-ms">0.00 ms</div>
+          </div>
+        </div>
+        <div class="efficiency-banner" id="metric-efficiency-banner">
+          <span>Economia de Cálculos:</span>
+          <span id="metric-pruning-pct">-- %</span>
+        </div>
+        <div class="stat-row" style="margin-top: 8px;">
+          <span class="stat-name">Nós Visitados na Árvore:</span>
+          <span class="stat-val" id="metric-nodes-visited">0</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">Aceleração Relativa:</span>
+          <span class="stat-val" id="metric-speedup">-- x</span>
+        </div>
+      </section>
+
+      <!-- 2. Estrutura 1: Quadtree Espacial -->
+      <section class="panel-card">
+        <div class="panel-header">
+          <span class="panel-title">1. Quadtree Espacial</span>
+          <span class="panel-tag">Capacidade = 4</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">Total de Pontos Indexados:</span>
+          <span class="stat-val" id="qt-total-points">0</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">Quadrantes Ativos no Mapa:</span>
+          <span class="stat-val" id="qt-quadrants-count">0</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">Profundidade Máxima Permitida:</span>
+          <span class="stat-val">10</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">Mecanismo de Desfragmentação:</span>
+          <span class="stat-val" style="color: var(--badge-green);">Merge Recursivo</span>
+        </div>
+      </section>
+
+      <!-- 3. Estrutura 2: Indexed Min-Heap (Decay & Upvotes) -->
+      <section class="panel-card">
+        <div class="panel-header">
+          <span class="panel-title">2. Indexed Min-Heap</span>
+          <span class="panel-tag">Expiração O(log n)</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">Incidentes na Heap:</span>
+          <span class="stat-val" id="heap-size">0</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">Próximo a Expirar (Topo):</span>
+          <span class="stat-val" id="heap-next-id" style="color: var(--action);">--</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">Timestamp do Topo:</span>
+          <span class="stat-val" id="heap-next-time" style="font-size: 11px;">--</span>
+        </div>
+        <p style="font-size: 11px; color: var(--muted); margin-top: 6px;">
+          &bull; Upvotes estendem o TTL (+2h) e aplicam <code>sift_down</code> em tempo O(log n).
+        </p>
+      </section>
+
+      <!-- 4. Estrutura 3: Hash Table (Endereçamento Aberto) -->
+      <section class="panel-card">
+        <div class="panel-header">
+          <span class="panel-title">3. Hash Table</span>
+          <span class="panel-tag">Sondagem Quadrática</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">Fator de Carga (&alpha; &le; 0.50):</span>
+          <span class="stat-val" id="ht-load-val">0.00</span>
+        </div>
+        <div class="load-progress-bar">
+          <div class="load-progress-fill" id="ht-progress-fill" style="width: 0%;"></div>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">Capacidade (Número Primo):</span>
+          <span class="stat-val" id="ht-capacity">0</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">Elementos Ativos:</span>
+          <span class="stat-val" id="ht-size">0</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">Marcadores TOMBSTONE:</span>
+          <span class="stat-val" id="ht-tombstones">0</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">Rehashes Realizados:</span>
+          <span class="stat-val" id="ht-rehashes">0</span>
+        </div>
+      </section>
+
+      <!-- 5. Estrutura 4: Grid Graph & BFS (Zonas Vermelhas) -->
+      <section class="panel-card">
+        <div class="panel-header">
+          <span class="panel-title">4. Grid Graph (30x30)</span>
+          <span class="panel-tag">BFS 8-Direcional</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">Células Quentes Ativas:</span>
+          <span class="stat-val" id="gg-active-cells">0</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">Zonas Vermelhas (Clusters &ge; 10):</span>
+          <span class="stat-val" id="gg-redzones-count" style="color: var(--action);">0</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">Resolução da Grade:</span>
+          <span class="stat-val">30 &times; 30 (900 nós)</span>
+        </div>
+      </section>
+
+    </aside>
+  </main>
+
+  <!-- Modal Flutuante para Relatar Incidente -->
+  <div class="incident-modal" id="modal-report">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+      <h3 style="font-size: 14px; font-weight: 600;">Reportar Incidente</h3>
+      <button id="btn-close-modal" style="background: none; border: none; color: var(--muted); cursor: pointer; font-size: 16px;">&times;</button>
+    </div>
+    <form id="form-report">
+      <div class="form-group">
+        <label for="input-tipo">Tipo de Ocorrência</label>
+        <select id="input-tipo" class="form-control" required>
+          <option value="ASSALTO">Assalto à mão armada (Peso +5, TTL 48h)</option>
+          <option value="FURTO">Furto / Arrombamento (Peso +3, TTL 24h)</option>
+          <option value="VIA_PERIGOSA">Via Perigosa / Sem Iluminação (Peso +2, TTL 36h)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="input-titulo">Título Curto</label>
+        <input type="text" id="input-titulo" class="form-control" placeholder="Ex: Abordagem no ponto de ônibus" required>
+      </div>
+      <div class="form-group">
+        <label for="input-desc">Descrição / Detalhes</label>
+        <textarea id="input-desc" class="form-control" rows="2" placeholder="Detalhes do ocorrido"></textarea>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+        <div class="form-group">
+          <label>Latitude</label>
+          <input type="number" step="0.000001" id="input-lat" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label>Longitude</label>
+          <input type="number" step="0.000001" id="input-lon" class="form-control" required>
+        </div>
+      </div>
+      <p style="font-size: 11px; color: var(--muted); margin-bottom: 12px;">
+        Dica: Clique em qualquer ponto do mapa para preencher as coordenadas automaticamente.
+      </p>
+      <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+        Salvar e Inserir na Quadtree
+      </button>
+    </form>
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <!-- Aplicação JS -->
+  <script src="/static/app.js"></script>
+</body>
+</html>

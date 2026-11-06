@@ -155,12 +155,12 @@
 **Description:** Criar os endpoints REST no FastAPI (`src/api/app.py`) e a interface web em tela única (`100svh` App-Frame) seguindo a estética `design-taste-frontend` (`system.css`, zero violeta, tipografia tabular `JetBrains Mono`, superfícies neutras `#0E1013` / `#15181D`, acento `#E5484D` e quadrantes `#2E90FA`), permitindo clicar no mapa de São Paulo para consultar raio, reportar incidente, dar upvote, ligar/desligar o desenho dos quadrantes da Quadtree e das Zonas Vermelhas BFS, injetar +500 incidentes e avançar o tempo (+1h / +6h).
 
 **Acceptance criteria:**
-- [ ] Endpoints REST funcionais: `GET /api/state`, `GET /api/search`, `POST /api/incidents`, `POST /api/incidents/{id}/upvote`, `POST /api/simulate/time`, `POST /api/simulate/seed`, `POST /api/simulate/reset`.
-- [ ] Mapa Leaflet de São Paulo desenha em tempo real os pinos (coloridos por Decay), as subdivisões da Quadtree, os polígonos das Zonas Vermelhas (BFS) e o círculo de Range Query.
-- [ ] Painel de telemetria exibe lado a lado `Quadtree O(log n)` vs `Busca Linear O(n)`, topo da `IndexedMinHeap`, e métricas da `HashTable` (`load_factor / 0.50`, `tombstones`, `rehashes`).
+- [x] Endpoints REST funcionais: `GET /api/state`, `GET /api/search`, `POST /api/incidents`, `POST /api/incidents/{id}/upvote`, `POST /api/simulate/time`, `POST /api/simulate/seed`, `POST /api/simulate/reset`.
+- [x] Mapa Leaflet de São Paulo desenha em tempo real os pinos (coloridos por Decay), as subdivisões da Quadtree, os polígonos das Zonas Vermelhas (BFS) e o círculo de Range Query.
+- [x] Painel de telemetria exibe lado a lado `Quadtree O(log n)` vs `Busca Linear O(n)`, topo da `IndexedMinHeap`, e métricas da `HashTable` (`load_factor / 0.50`, `tombstones`, `rehashes`).
 
 **Verification:**
-- [ ] Servidor inicia sem erros e responde `200 OK` nos testes de endpoint (`pytest tests/test_api.py -v`).
+- [x] Servidor inicia sem erros e responde `200 OK` nos testes de endpoint (`pytest tests/test_api.py -v`).
 
 **Dependencies:** Task 6
 
