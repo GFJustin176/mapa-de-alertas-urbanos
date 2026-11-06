@@ -54,12 +54,12 @@
 **Description:** Implementar a `IndexedMinHeap` do zero ordenada por `expires_at` (menor timestamp no topo `heap[0]`), utilizando nossa `HashTable` interna para mapear `incidente_id -> indice_na_heap` em $O(1)$ e permitir atualizações de prioridade (`upvote` aumentando TTL) e remoções arbitrárias em $O(\log n)$.
 
 **Acceptance criteria:**
-- [ ] `push(incidente)` e `pop_min()` mantêm a invariante de Min-Heap em $O(\log n)$.
-- [ ] `update_expiration(incidente_id, new_expires_at)` localiza o nó em $O(1)$ via `HashTable` interna e aplica `_sift_down` / `_sift_up` em $O(\log n)$.
-- [ ] `pop_expired(current_time)` remove e retorna todos os incidentes com `expires_at <= current_time`.
+- [x] `push(incidente)` e `pop_min()` mantêm a invariante de Min-Heap em $O(\log n)$.
+- [x] `update_expiration(incidente_id, new_expires_at)` localiza o nó em $O(1)$ via `HashTable` interna e aplica `_sift_down` / `_sift_up` em $O(\log n)$.
+- [x] `pop_expired(current_time)` remove e retorna todos os incidentes com `expires_at <= current_time`.
 
 **Verification:**
-- [ ] Tests pass: `pytest tests/test_min_heap.py -v`
+- [x] Tests pass: `pytest tests/test_min_heap.py -v`
 
 **Dependencies:** Task 1, Task 2
 
@@ -72,8 +72,8 @@
 ---
 
 ## Checkpoint 1: Após Tasks 1–3
-- [ ] `pytest tests/test_hash_table.py tests/test_min_heap.py -v` passa com 100% de sucesso.
-- [ ] Zero uso de `dict` ou `heapq` dentro das estruturas implementadas.
+- [x] `pytest tests/test_hash_table.py tests/test_min_heap.py -v` passa com 100% de sucesso.
+- [x] Zero uso de `dict` ou `heapq` dentro das estruturas implementadas.
 
 ---
 
