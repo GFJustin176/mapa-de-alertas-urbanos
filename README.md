@@ -15,18 +15,24 @@ O projeto demonstra a implementação manual (*from scratch*) e a sincronizaçã
 - Python 3.10+ (testado no Python 3.14)
 - Pip
 
-### 2. Instalação das Dependências
+### 2. Ativação do Ambiente Virtual (.venv)
+O projeto já conta com o ambiente virtual `.venv` configurado e isolado localmente:
 ```powershell
-pip install -r requirements.txt
+# Ativar no Windows PowerShell
+.\.venv\Scripts\Activate.ps1
 ```
 
 ### 3. Execução dos Testes Automatizados (32 Testes)
 ```powershell
-python -m pytest tests/ -v
+.\.venv\Scripts\python.exe -m pytest tests/ -v
+# ou, com a .venv ativada:
+pytest tests/ -v
 ```
 
 ### 4. Inicialização do Servidor Web
 ```powershell
+.\.venv\Scripts\uvicorn.exe src.api.app:app --reload --port 8000
+# ou, com a .venv ativada:
 uvicorn src.api.app:app --reload --port 8000
 ```
 Acesse no navegador: **[http://localhost:8000](http://localhost:8000)**
@@ -36,3 +42,4 @@ Acesse no navegador: **[http://localhost:8000](http://localhost:8000)**
 ## 📚 Material para Apresentação e Defesa
 Para o roteiro de apresentação e a preparação individual de cada um dos 4 integrantes do grupo, consulte o arquivo:
 👉 **[`GUIA_DEFESA_GRUPO.md`](GUIA_DEFESA_GRUPO.md)**
+
