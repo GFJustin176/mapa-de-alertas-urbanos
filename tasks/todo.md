@@ -30,13 +30,13 @@
 **Description:** Implementar a `HashTable` do zero sem usar `dict` para armazenamento, empregando Endereçamento Aberto, Sondagem Quadrática ($h(k, i) = (h(k) + i^2) \bmod m$), marcador explícito `TOMBSTONE` para deleções e Rehashing automático para o próximo número primo sempre que `(size + tombstones) / capacity > 0.50`.
 
 **Acceptance criteria:**
-- [ ] Suporta `put(key, value)`, `get(key)`, `remove(key)`, `contains(key)` e `values()` em tempo esperado $O(1)$.
-- [ ] Remoção marca o slot com `TOMBSTONE`, permitindo que buscas por chaves em cadeia de colisão continuem funcionando.
-- [ ] Dispara `_rehash()` imediatamente quando `(size + tombstones) / capacity > 0.50`, zerando todas as `TOMBSTONE`s e mantendo a tabela enxuta.
-- [ ] Expõe telemetria (`capacity`, `size`, `tombstones`, `load_factor`, `rehash_count`, `total_collisions`).
+- [x] Suporta `put(key, value)`, `get(key)`, `remove(key)`, `contains(key)` e `values()` em tempo esperado $O(1)$.
+- [x] Remoção marca o slot com `TOMBSTONE`, permitindo que buscas por chaves em cadeia de colisão continuem funcionando.
+- [x] Dispara `_rehash()` imediatamente quando `(size + tombstones) / capacity > 0.50`, zerando todas as `TOMBSTONE`s e mantendo a tabela enxuta.
+- [x] Expõe telemetria (`capacity`, `size`, `tombstones`, `load_factor`, `rehash_count`, `total_collisions`).
 
 **Verification:**
-- [ ] Tests pass: `pytest tests/test_hash_table.py -v`
+- [x] Tests pass: `pytest tests/test_hash_table.py -v`
 
 **Dependencies:** Task 1
 
