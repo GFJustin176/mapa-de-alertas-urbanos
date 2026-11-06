@@ -275,6 +275,35 @@ async function executeRadiusSearch(lat, lon, radiusMeters) {
     document.getElementById("metric-nodes-visited").textContent = `${tel.quadtree_nodes_visited} nós`;
     document.getElementById("metric-speedup").textContent = `${tel.speedup_factor}x mais rápido`;
 
+    // Renderizar a lista textual de alertas no raio encontrado
+    const container = document.getElementById("radius-incidents-container");
+    const countBadge = document.getElementById("radius-incidents-count");
+    const listEl = document.getElementById("radius-incidents-list");
+
+    container.style.display = "block";
+    const incidents = data.incidents || [];
+    countBadge.textContent = `${incidents.length} no raio`;
+
+    if (incidents.length === 0) {
+      listEl.innerHTML = `<div style="font-size: 11px; color: var(--muted); padding: 8px 0;">Nenhum alerta ativo encontrado neste raio de ${(radiusMeters / 1000).toFixed(1)} km.</div>`;
+    } else {
+      listEl.innerHTML = incidents.map((inc) => {
+        const distKm = (inc.distancia_metros / 1000).toFixed(2);
+        return `
+          <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--line); border-radius: var(--r-input); padding: 8px; display: flex; flex-direction: column; gap: 4px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-weight: 600; font-size: 12px; color: var(--ink);">${inc.titulo || inc.tipo}</span>
+              <span class="badge-nivel badge-${inc.nivel_alerta}" style="font-size: 10px; padding: 1px 5px;">${inc.nivel_alerta}</span>
+            </div>
+            <div style="font-size: 11px; color: var(--muted); display: flex; justify-content: space-between;">
+              <span>Aprox. <b>${inc.distancia_metros < 1000 ? Math.round(inc.distancia_metros) + ' m' : distKm + ' km'}</b> de distância</span>
+              <span>${inc.upvotes} &bull; upvotes</span>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
   } catch (err) {
     console.error("Erro na busca espacial por raio:", err);
   }

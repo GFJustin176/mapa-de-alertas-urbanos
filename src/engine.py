@@ -179,15 +179,17 @@ class AlertEngine:
         calcs_economizados = max(0, total_pontos - metrics["distance_calculations"])
         pruning_ratio = (calcs_economizados / total_pontos * 100.0) if total_pontos > 0 else 0.0
 
-        # Serialização com níveis visuais de alerta
+        # Serialização com níveis visuais de alerta e distância calculada
         incidentes_formatados = []
         for inc in quad_results:
             nivel = inc.calcular_nivel_alerta(self.current_time)
+            dist_m = haversine_meters(lat, lon, inc.latitude, inc.longitude)
             incidentes_formatados.append({
                 "id": inc.id,
                 "tipo": inc.tipo.value,
                 "latitude": inc.latitude,
                 "longitude": inc.longitude,
+                "distancia_metros": round(dist_m, 1),
                 "created_at": inc.created_at.isoformat(),
                 "expires_at": inc.expires_at.isoformat(),
                 "upvotes": inc.upvotes,
@@ -195,6 +197,9 @@ class AlertEngine:
                 "titulo": inc.titulo,
                 "descricao": inc.descricao,
             })
+
+        # Ordena os incidentes por proximidade do ponto central clicado
+        incidentes_formatados.sort(key=lambda x: x["distancia_metros"])
 
         return {
             "incidents": incidentes_formatados,

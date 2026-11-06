@@ -117,6 +117,16 @@
           <span class="stat-name">Aceleração Relativa:</span>
           <span class="stat-val" id="metric-speedup">-- x</span>
         </div>
+
+        <!-- Lista de Alertas no Raio Consultado -->
+        <div class="radius-incidents-container" id="radius-incidents-container" style="display: none; margin-top: 12px; border-top: 1px solid var(--line); padding-top: 10px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span style="font-size: 12px; font-weight: 600; color: var(--ink);">Alertas no Raio</span>
+            <span class="badge-nivel badge-CRITICO" id="radius-incidents-count" style="font-size: 10px; padding: 1px 6px;">0</span>
+          </div>
+          <div id="radius-incidents-list" style="display: flex; flex-direction: column; gap: 6px; max-height: 220px; overflow-y: auto;">
+          </div>
+        </div>
       </section>
 
       <!-- 2. Estrutura 1: Quadtree Espacial -->
