@@ -105,11 +105,11 @@
 **Description:** Implementar o grafo em grade `GridGraph` (`30x30` células sobre São Paulo) do zero, acumulando pesos de severidade por célula (Assalto = 5, Furto = 3, Via Perigosa = 2) e executando o algoritmo **BFS (Busca em Largura / Componentes Conectados)** sobre células com score $\ge 10$ para identificar manchas de calor ("Zonas Vermelhas") contínuas.
 
 **Acceptance criteria:**
-- [ ] Mapeia coordenadas `(lat, lon)` em índices de célula `(row, col)` em $O(1)$ e atualiza o peso na inserção e na remoção de incidentes.
-- [ ] `find_red_zones_bfs(threshold=10)` executa BFS em vizinhança de 8 direções (usando fila própria sem bibliotecas externas de grafos) e retorna os clusters conectados com suas `BoundingBoxes`, pontuação total e quantidade de células.
+- [x] Mapeia coordenadas `(lat, lon)` em índices de célula `(row, col)` em $O(1)$ e atualiza o peso na inserção e na remoção de incidentes.
+- [x] `find_red_zones_bfs(threshold=10)` executa BFS em vizinhança de 8 direções (usando fila própria sem bibliotecas externas de grafos) e retorna os clusters conectados com suas `BoundingBoxes`, pontuação total e quantidade de células.
 
 **Verification:**
-- [ ] Tests pass: `pytest tests/test_grid_graph.py -v`
+- [x] Tests pass: `pytest tests/test_grid_graph.py -v`
 
 **Dependencies:** Task 1, Task 2
 
@@ -122,7 +122,7 @@
 ---
 
 ## Checkpoint 2: Após Tasks 4–5
-- [ ] `pytest tests/ -v` passa em todas as 4 estruturas (`HashTable`, `IndexedMinHeap`, `Quadtree`, `GridGraph`).
+- [x] `pytest tests/ -v` passa em todas as 4 estruturas (`HashTable`, `IndexedMinHeap`, `Quadtree`, `GridGraph`).
 
 ---
 
