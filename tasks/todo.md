@@ -131,12 +131,12 @@
 **Description:** Implementar a camada `SQLite` (`src/storage/database.py`), o gerador de dados realistas em hotspots de São Paulo (Sé, Paulista, Pinheiros, Itaquera, Santo Amaro, Vila Mariana, Tatuapé, Lapa, etc.) e a fachada `AlertEngine` (`src/engine.py`) que mantém as 4 estruturas sincronizadas em memória, controla o relógio virtual ("Time Travel") e calcula o comparativo ao vivo entre `Quadtree O(log n)` e `Lista Linear O(n)`.
 
 **Acceptance criteria:**
-- [ ] Inicializa o banco SQLite com seed inicial de incidentes distribuídos em São Paulo e reconstrói as 4 estruturas em memória no startup.
-- [ ] Operações `create_incident`, `upvote_incident`, `advance_time(hours)` e `inject_bulk_incidents(count)` atualizam atomicamente `HashTable`, `IndexedMinHeap`, `Quadtree`, `GridGraph` e `SQLite`.
-- [ ] `search_radius(lat, lon, radius_m)` retorna os incidentes + o comparativo completo de telemetria (`quadtree_ms`, `linear_ms`, `quadtree_calcs`, `linear_calcs`, `pruning_ratio`).
+- [x] Inicializa o banco SQLite com seed inicial de incidentes distribuídos em São Paulo e reconstrói as 4 estruturas em memória no startup.
+- [x] Operações `create_incident`, `upvote_incident`, `advance_time(hours)` e `inject_bulk_incidents(count)` atualizam atomicamente `HashTable`, `IndexedMinHeap`, `Quadtree`, `GridGraph` e `SQLite`.
+- [x] `search_radius(lat, lon, radius_m)` retorna os incidentes + o comparativo completo de telemetria (`quadtree_ms`, `linear_ms`, `quadtree_calcs`, `linear_calcs`, `pruning_ratio`).
 
 **Verification:**
-- [ ] Tests pass: `pytest tests/ -v` (incluindo teste de integração do `AlertEngine`)
+- [x] Tests pass: `pytest tests/ -v` (incluindo teste de integração do `AlertEngine`)
 
 **Dependencies:** Tasks 1, 2, 3, 4, 5
 
