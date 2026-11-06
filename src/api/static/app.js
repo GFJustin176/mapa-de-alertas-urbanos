@@ -360,3 +360,4 @@ window.upvoteIncident = async function(id) {
     console.error("Erro ao dar upvote:", err);
   }
 };
+

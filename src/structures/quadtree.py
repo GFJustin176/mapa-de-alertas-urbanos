@@ -229,3 +229,4 @@ class Quadtree:
         quadrants: List[Dict[str, Any]] = []
         self.root.collect_quadrants(quadrants)
         return quadrants
+

@@ -121,7 +121,7 @@ class AlertEngine:
         novo_expires_at = base_exp + timedelta(hours=bonus_hours)
         incidente.expires_at = novo_expires_at
 
-        # Atualiza a heap usando o mapeamento O(1) da nossa HashTable interna
+        # Atualiza a heap utilizando o mapeamento O(1) da HashTable interna
         self.min_heap.update_expiration(incidente_id, novo_expires_at)
         self.storage.update_incident_upvotes_and_expiration(incidente_id, incidente.upvotes, novo_expires_at)
 
@@ -160,12 +160,12 @@ class AlertEngine:
         Executa a busca espacial na Quadtree e simultaneamente em força bruta O(n)
         para gerar a telemetria comparativa de performance em milissegundos e contadores.
         """
-        # 1. Busca eficiente na Quadtree
+        # 1. Busca na Quadtree com poda espacial
         t0_quad = time.perf_counter()
         quad_results, metrics = self.quadtree.query_radius(lat, lon, radius_meters)
         t_quad_ms = (time.perf_counter() - t0_quad) * 1000.0
 
-        # 2. Busca linear O(n) para comparação de bancada acadêmica
+        # 2. Busca linear O(n) para aferição comparativa de desempenho
         t0_lin = time.perf_counter()
         linear_count = 0
         todos_ativos = list(self.hash_table.values())
@@ -300,3 +300,4 @@ class AlertEngine:
                 "red_zones_count": len(formatted_red_zones),
             },
         }
+

@@ -123,3 +123,4 @@ def test_quadtree_get_all_quadrants_for_visualization():
         assert "min_lat" in q and "max_lat" in q
         assert "min_lon" in q and "max_lon" in q
         assert "depth" in q
+

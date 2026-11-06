@@ -42,10 +42,10 @@ def test_hash_table_remove_creates_tombstone():
 
 
 def test_hash_table_collision_resolution_and_tombstone_chaining():
-    # Usamos uma capacidade inicial de 11 (número primo)
+    # Capacidade inicial de 11 (número primo)
     ht = HashTable(initial_capacity=11)
 
-    # Inserimos chaves e verificamos que colisões são resolvidas por sondagem quadrática
+    # Inserção de chaves com resolução de colisões por sondagem quadrática
     ht.put("k1", "v1")
     ht.put("k2", "v2")
     ht.put("k3", "v3")

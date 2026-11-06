@@ -161,3 +161,4 @@ class IndexedMinHeap:
                 idx = smallest
             else:
                 break
+

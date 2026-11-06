@@ -173,3 +173,4 @@ def simulate_reset(payload: SeedRequest) -> Dict[str, Any]:
 
 # Montagem dos arquivos estáticos para CSS e JS
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+

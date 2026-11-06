@@ -87,3 +87,4 @@ def generate_realistic_incidents(count: int, base_time: datetime, seed: int = 42
         incidentes.append(inc)
 
     return incidentes
+

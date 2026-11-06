@@ -116,3 +116,4 @@ class BoundingBox:
     def center_lon(self) -> float:
         """Longitude central da caixa delimitadora."""
         return (self.min_lon + self.max_lon) / 2.0
+

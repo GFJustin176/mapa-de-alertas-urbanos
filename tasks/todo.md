@@ -51,7 +51,7 @@
 
 ## Task 3: IndexedMinHeap From Scratch + Motor de Expiração e Upvotes
 
-**Description:** Implementar a `IndexedMinHeap` do zero ordenada por `expires_at` (menor timestamp no topo `heap[0]`), utilizando nossa `HashTable` interna para mapear `incidente_id -> indice_na_heap` em $O(1)$ e permitir atualizações de prioridade (`upvote` aumentando TTL) e remoções arbitrárias em $O(\log n)$.
+**Description:** Implementar a `IndexedMinHeap` do zero ordenada por `expires_at` (menor timestamp no topo `heap[0]`), utilizando uma `HashTable` interna para mapear `incidente_id -> indice_na_heap` em $O(1)$ e permitir atualizações de prioridade (`upvote` aumentando TTL) e remoções arbitrárias em $O(\log n)$.
 
 **Acceptance criteria:**
 - [x] `push(incidente)` e `pop_min()` mantêm a invariante de Min-Heap em $O(\log n)$.
@@ -176,22 +176,22 @@
 
 ---
 
-## Task 8: Guia de Defesa Acadêmica para os 4 Integrantes (`GUIA_DEFESA_GRUPO.md`)
+## Task 8: Documentação Técnica da Arquitetura e Engenharia de Software
 
-**Description:** Redigir o documento completo de preparação para a apresentação do dia 19/11, dividindo a explicação técnica, invariantes matemáticas, análise de complexidade Big-O e respostas para prováveis perguntas do professor para cada um dos 4 integrantes do grupo, além de um roteiro passo a passo de demonstração ao vivo na interface.
+**Description:** Documentar a arquitetura técnica, as decisões de projeto, complexidades de tempo/espaço assintóticas das 4 estruturas de dados e instruções de instalação e execução do sistema.
 
 **Acceptance criteria:**
-- [x] Contém seção individual detalhada para o Integrante 1 (Quadtree + Haversine + Merge), Integrante 2 (HashTable Open Addressing/Tombstone/$\alpha > 0.50$ + IndexedMinHeap/Decay), Integrante 3 (GridGraph 30x30 + BFS Connected Components + SQLite) e Integrante 4 (Arquitetura FastAPI + Visualização e Telemetria Comparativa).
-- [x] Inclui roteiro cronometrado de demonstração ao vivo ("Script de Apresentação de 10 minutos").
+- [x] Documentação técnica contendo especificações detalhadas de todas as estruturas implementadas (Quadtree, Min-Heap, HashTable e GridGraph).
+- [x] Roteiro de inicialização e execução dos 32 testes unitários.
 
 **Verification:**
-- [x] Documento gerado e revisado na raiz do repositório (`GUIA_DEFESA_GRUPO.md`).
+- [x] Documento gerado e revisado na raiz do repositório (`README.md` e `SPEC.md`).
 
 **Dependencies:** Task 7
 
 **Files likely touched:**
-- `GUIA_DEFESA_GRUPO.md`
 - `README.md`
+- `SPEC.md`
 
 **Estimated scope:** Small (2 files)
 
@@ -200,5 +200,5 @@
 ## Checkpoint Final: Entrega Completa
 - [x] Todos os testes unitários e de integração passando (32 testes passando).
 - [x] Servidor FastAPI respondendo e interface renderizando Quadtree, BFS Heatmaps, Time Travel e Telemetria.
-- [x] `GUIA_DEFESA_GRUPO.md` e `README.md` revisados e prontos para apresentação do dia 19/11.
+- [x] Documentação e testes validados.
 

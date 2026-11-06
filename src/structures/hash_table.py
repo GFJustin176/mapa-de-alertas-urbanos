@@ -221,3 +221,4 @@ class HashTable:
         for slot in old_slots:
             if slot is not None and slot is not TOMBSTONE:
                 self.put(slot[0], slot[1])
+

@@ -73,7 +73,7 @@ def test_grid_graph_find_red_zones_bfs_connected_components():
     graph.add_incident(_criar_incidente("a2", lat_a, lon_a, TipoIncidente.ASSALTO))
 
     # Ponto B: Célula adjacente vizinha imediata a A
-    # Criamos coordenadas na célula ao lado (r, c+1)
+    # Coordenadas na célula adjacente (r, c+1)
     cell_b_box = graph.get_cell_box(cell_a[0], cell_a[1] + 1)
     lat_b, lon_b = cell_b_box.center_lat, cell_b_box.center_lon
     graph.add_incident(_criar_incidente("b1", lat_b, lon_b, TipoIncidente.ASSALTO))
@@ -105,3 +105,4 @@ def test_grid_graph_find_red_zones_bfs_connected_components():
     cluster_isolado = next(rz for rz in red_zones if len(rz["cells"]) == 1)
     assert cluster_isolado["total_score"] == 10
     assert cluster_isolado["incident_count"] == 2
+

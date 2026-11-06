@@ -111,3 +111,4 @@ def test_indexed_min_heap_remove_arbitrary_node():
     # Verifica que a heap continua ordenada
     assert heap.pop_min().id == "inc-1"
     assert heap.pop_min().id == "inc-3"
+

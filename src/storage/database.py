@@ -114,3 +114,4 @@ class DatabaseStorage:
             titulo=row["titulo"],
             descricao=row["descricao"],
         )
+

@@ -66,3 +66,4 @@ def test_api_simulate_time_and_bulk_seed(client):
     time_res = client.post("/api/simulate/time", json={"hours": 60.0})
     assert time_res.status_code == 200
     assert time_res.json()["expired_count"] > 0
+

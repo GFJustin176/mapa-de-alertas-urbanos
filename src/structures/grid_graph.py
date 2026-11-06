@@ -145,3 +145,4 @@ class GridGraph:
                         "max_lon": box.max_lon,
                     })
         return active
+

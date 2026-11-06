@@ -88,3 +88,4 @@ def test_engine_search_radius_with_telemetry(engine):
 
     # Em uma busca em raio pequeno, a Quadtree deve avaliar menos distâncias que a busca linear
     assert telemetry["linear_calcs"] == len(engine)
+

@@ -79,3 +79,4 @@ def test_incidente_decay_levels():
     # Expirado (0% restante)
     expired_time = now + timedelta(hours=9)
     assert incidente.calcular_nivel_alerta(expired_time) == "EXPIRADO"
+
