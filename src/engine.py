@@ -119,9 +119,8 @@ class AlertEngine:
         # Garante que o bônus seja somado ao maior valor entre a expiração atual e o relógio
         base_exp = max(self.current_time, incidente.expires_at)
         novo_expires_at = base_exp + timedelta(hours=bonus_hours)
-        incidente.expires_at = novo_expires_at
 
-        # Atualiza a heap utilizando o mapeamento O(1) da HashTable interna
+        # Atualiza a heap utilizando o mapeamento O(1) da HashTable interna (aplica _sift_down)
         self.min_heap.update_expiration(incidente_id, novo_expires_at)
         self.storage.update_incident_upvotes_and_expiration(incidente_id, incidente.upvotes, novo_expires_at)
 

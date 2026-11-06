@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Any, Dict, Optional
 from fastapi import FastAPI, HTTPException, Query, status
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, Response
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
@@ -68,6 +68,12 @@ def read_root():
     if not index_file.exists():
         return {"status": "ok", "message": "Frontend index.html não localizado ainda."}
     return FileResponse(index_file)
+
+
+@app.get("/favicon.ico", include_in_schema=False)
+def favicon():
+    """Evita log de erro 404 no console do navegador."""
+    return Response(status_code=204)
 
 
 @app.get("/api/state")

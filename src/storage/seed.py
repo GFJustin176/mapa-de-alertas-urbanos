@@ -1,6 +1,7 @@
 """Gerador de dados realistas de incidentes nos principais bairros de São Paulo."""
 
 import random
+import uuid
 from datetime import datetime, timezone, timedelta
 from typing import List
 from src.core.models import Incidente, TipoIncidente
@@ -73,7 +74,7 @@ def generate_realistic_incidents(count: int, base_time: datetime, seed: int = 42
         expires_at = created_at + timedelta(hours=ttl_horas)
 
         inc = Incidente(
-            id=f"sp-{i + 1:04d}",
+            id=f"sp-{uuid.uuid4().hex[:8]}",
             tipo=tipo,
             latitude=round(lat, 6),
             longitude=round(lon, 6),

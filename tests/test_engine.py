@@ -54,6 +54,12 @@ def test_engine_upvote_updates_heap_priority(engine):
     # Verifica que o objeto dentro da heap também foi atualizado
     assert engine.min_heap.get(inc.id).expires_at == updated.expires_at
 
+    # Verifica que o topo da Min-Heap reorganiza sua prioridade após prorrogação
+    topo_antes = engine.min_heap.peek()
+    engine.upvote_incident(topo_antes.id, bonus_hours=120.0)
+    topo_depois = engine.min_heap.peek()
+    assert topo_depois.id != topo_antes.id
+
 
 def test_engine_advance_time_and_decay(engine):
     initial_count = len(engine)

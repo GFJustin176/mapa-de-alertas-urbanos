@@ -7,6 +7,17 @@ let redzonesLayer;
 let incidentsLayer;
 let searchLayer;
 let currentRadiusMeters = 2000;
+let lastSearchCenter = null;
+
+function escapeHtml(text) {
+  if (!text) return "";
+  return String(text)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
 
 document.addEventListener("DOMContentLoaded", () => {
   initMap();
@@ -45,6 +56,7 @@ function initMap() {
   map.on("click", (e) => {
     const lat = e.latlng.lat;
     const lon = e.latlng.lng;
+    lastSearchCenter = { lat, lon };
 
     // Atualiza os inputs do modal caso esteja visível
     document.getElementById("input-lat").value = lat.toFixed(6);
@@ -74,6 +86,9 @@ function setupEventListeners() {
 
   document.getElementById("select-radius").addEventListener("change", (e) => {
     currentRadiusMeters = parseFloat(e.target.value);
+    if (lastSearchCenter) {
+      executeRadiusSearch(lastSearchCenter.lat, lastSearchCenter.lon, currentRadiusMeters);
+    }
   });
 
   // Ações de Time Travel e Simulação
@@ -98,8 +113,12 @@ function setupEventListeners() {
 
   document.getElementById("form-report").addEventListener("submit", async (e) => {
     e.preventDefault();
-    await submitNewIncident();
-    modal.classList.remove("active");
+    const success = await submitNewIncident();
+    if (success) {
+      modal.classList.remove("active");
+      document.getElementById("input-titulo").value = "";
+      document.getElementById("input-desc").value = "";
+    }
   });
 }
 
@@ -181,19 +200,21 @@ function renderState(data) {
         fillOpacity: 0.9,
       });
 
+      const safeTitulo = escapeHtml(inc.titulo || inc.tipo);
+      const safeDesc = escapeHtml(inc.descricao || '');
       const popupContent = `
         <div style="font-family: var(--font-ui); min-width: 220px;">
-          <div class="popup-title">${inc.titulo || inc.tipo}</div>
-          <div class="popup-desc">${inc.descricao || ''}</div>
+          <div class="popup-title">${safeTitulo}</div>
+          <div class="popup-desc">${safeDesc}</div>
           <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 8px;">
             <span class="badge-nivel badge-${inc.nivel_alerta}">${inc.nivel_alerta}</span>
             <span style="font-size: 11px; color: var(--muted); font-family: var(--font-mono);">${inc.upvotes} confirmações</span>
           </div>
           <div class="popup-meta">
             Expira em: ${new Date(inc.expires_at).toLocaleTimeString()}<br>
-            ID: ${inc.id}
+            ID: ${escapeHtml(inc.id)}
           </div>
-          <button class="btn btn-secondary" style="width: 100%; justify-content: center; font-size: 11px; padding: 5px 8px;" onclick="upvoteIncident('${inc.id}')">
+          <button class="btn btn-secondary" style="width: 100%; justify-content: center; font-size: 11px; padding: 5px 8px;" onclick="upvoteIncident('${escapeHtml(inc.id)}')">
             &#9650; Confirmar / Upvote (+2h de vida)
           </button>
         </div>
@@ -289,10 +310,11 @@ async function executeRadiusSearch(lat, lon, radiusMeters) {
     } else {
       listEl.innerHTML = incidents.map((inc) => {
         const distKm = (inc.distancia_metros / 1000).toFixed(2);
+        const safeTitulo = escapeHtml(inc.titulo || inc.tipo);
         return `
           <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--line); border-radius: var(--r-input); padding: 8px; display: flex; flex-direction: column; gap: 4px;">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-weight: 600; font-size: 12px; color: var(--ink);">${inc.titulo || inc.tipo}</span>
+              <span style="font-weight: 600; font-size: 12px; color: var(--ink);">${safeTitulo}</span>
               <span class="badge-nivel badge-${inc.nivel_alerta}" style="font-size: 10px; padding: 1px 5px;">${inc.nivel_alerta}</span>
             </div>
             <div style="font-size: 11px; color: var(--muted); display: flex; justify-content: space-between;">
@@ -367,12 +389,15 @@ async function submitNewIncident() {
     if (res.ok) {
       await refreshState();
       map.setView([latitude, longitude], 14);
+      return true;
     } else {
       const errData = await res.json();
       alert(`Erro: ${errData.detail || "Falha ao cadastrar"}`);
+      return false;
     }
   } catch (err) {
     console.error("Erro ao enviar novo incidente:", err);
+    return false;
   }
 }
 
@@ -383,6 +408,9 @@ window.upvoteIncident = async function(id) {
     if (res.ok) {
       await refreshState();
       map.closePopup();
+    } else {
+      const err = await res.json();
+      alert(`Não foi possível confirmar: ${err.detail || "Incidente não localizado."}`);
     }
   } catch (err) {
     console.error("Erro ao dar upvote:", err);
