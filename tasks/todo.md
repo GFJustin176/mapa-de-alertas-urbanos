@@ -181,11 +181,11 @@
 **Description:** Redigir o documento completo de preparação para a apresentação do dia 19/11, dividindo a explicação técnica, invariantes matemáticas, análise de complexidade Big-O e respostas para prováveis perguntas do professor para cada um dos 4 integrantes do grupo, além de um roteiro passo a passo de demonstração ao vivo na interface.
 
 **Acceptance criteria:**
-- [ ] Contém seção individual detalhada para o Integrante 1 (Quadtree + Haversine + Merge), Integrante 2 (HashTable Open Addressing/Tombstone/$\alpha > 0.50$ + IndexedMinHeap/Decay), Integrante 3 (GridGraph 30x30 + BFS Connected Components + SQLite) e Integrante 4 (Arquitetura FastAPI + Visualização e Telemetria Comparativa).
-- [ ] Inclui roteiro cronometrado de demonstração ao vivo ("Script de Apresentação de 10 minutos").
+- [x] Contém seção individual detalhada para o Integrante 1 (Quadtree + Haversine + Merge), Integrante 2 (HashTable Open Addressing/Tombstone/$\alpha > 0.50$ + IndexedMinHeap/Decay), Integrante 3 (GridGraph 30x30 + BFS Connected Components + SQLite) e Integrante 4 (Arquitetura FastAPI + Visualização e Telemetria Comparativa).
+- [x] Inclui roteiro cronometrado de demonstração ao vivo ("Script de Apresentação de 10 minutos").
 
 **Verification:**
-- [ ] Documento gerado e revisado na raiz do repositório (`GUIA_DEFESA_GRUPO.md`).
+- [x] Documento gerado e revisado na raiz do repositório (`GUIA_DEFESA_GRUPO.md`).
 
 **Dependencies:** Task 7
 
@@ -194,4 +194,11 @@
 - `README.md`
 
 **Estimated scope:** Small (2 files)
+
+---
+
+## Checkpoint Final: Entrega Completa
+- [x] Todos os testes unitários e de integração passando (32 testes passando).
+- [x] Servidor FastAPI respondendo e interface renderizando Quadtree, BFS Heatmaps, Time Travel e Telemetria.
+- [x] `GUIA_DEFESA_GRUPO.md` e `README.md` revisados e prontos para apresentação do dia 19/11.
 

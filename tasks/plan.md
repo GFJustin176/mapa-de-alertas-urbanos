@@ -39,29 +39,29 @@ Implementação incremental do sistema colaborativo de mapeamento de incidentes 
 ## Task List
 
 ### Phase 1: Fundação & Estruturas de Dados (Integrantes 1, 2 e 3)
-- [ ] **Task 1:** Ambiente, Entidades Core (`Incidente`, `Usuario`, `BoundingBox`) e Geometria (`Haversine`)
-- [ ] **Task 2:** `HashTable` *from scratch* (Endereçamento Aberto, Sondagem Quadrática, `TOMBSTONE`, Rehash $> 0.50$) + Testes
-- [ ] **Task 3:** `IndexedMinHeap` *from scratch* (Fila de Prioridade de Expiração + Upvotes + Decay) + Testes
+- [x] **Task 1:** Ambiente, Entidades Core (`Incidente`, `Usuario`, `BoundingBox`) e Geometria (`Haversine`)
+- [x] **Task 2:** `HashTable` *from scratch* (Endereçamento Aberto, Sondagem Quadrática, `TOMBSTONE`, Rehash $> 0.50$) + Testes
+- [x] **Task 3:** `IndexedMinHeap` *from scratch* (Fila de Prioridade de Expiração + Upvotes + Decay) + Testes
 
 ### Checkpoint 1: Estruturas de Indexação e Tempo
-- [ ] `pytest tests/test_hash_table.py tests/test_min_heap.py` passa 100%
+- [x] `pytest tests/test_hash_table.py tests/test_min_heap.py` passa 100%
 
 ### Phase 2: Estruturas Espaciais e de Grafos (Integrantes 1 e 3)
-- [ ] **Task 4:** `Quadtree` *from scratch* (Subdivisão, Range Query com poda + Haversine, Remoção com Merge) + Testes
-- [ ] **Task 5:** `GridGraph` `30x30` *from scratch* + Algoritmo `BFS` (Componentes Conectados / Zonas Vermelhas) + Testes
+- [x] **Task 4:** `Quadtree` *from scratch* (Subdivisão, Range Query com poda + Haversine, Remoção com Merge) + Testes
+- [x] **Task 5:** `GridGraph` `30x30` *from scratch* + Algoritmo `BFS` (Componentes Conectados / Zonas Vermelhas) + Testes
 
 ### Checkpoint 2: As 4 Estruturas Validadas
-- [ ] `pytest tests/` passa 100% nas 4 estruturas isoladas
+- [x] `pytest tests/` passa 100% nas 4 estruturas isoladas
 
 ### Phase 3: Persistência, Orquestração e Interface Web (Integrantes 3 e 4)
-- [ ] **Task 6:** Persistência `SQLite`, Gerador de Carga Realista de São Paulo (Seed) e Orquestrador `AlertEngine`
-- [ ] **Task 7:** API `FastAPI` + Frontend Interativo (`Leaflet.js` + Sistema Visual `design-taste-frontend`)
-- [ ] **Task 8:** Documento `GUIA_DEFESA_GRUPO.md` para os 4 integrantes + Validação End-to-End
+- [x] **Task 6:** Persistência `SQLite`, Gerador de Carga Realista de São Paulo (Seed) e Orquestrador `AlertEngine`
+- [x] **Task 7:** API `FastAPI` + Frontend Interativo (`Leaflet.js` + Sistema Visual `design-taste-frontend`)
+- [x] **Task 8:** Documento `GUIA_DEFESA_GRUPO.md` para os 4 integrantes + Validação End-to-End
 
 ### Checkpoint Final: Entrega Completa
-- [ ] Todos os testes unitários e de integração passando
-- [ ] Servidor FastAPI respondendo e interface renderizando Quadtree, BFS Heatmaps, Time Travel e Telemetria
-- [ ] `GUIA_DEFESA_GRUPO.md` revisado
+- [x] Todos os testes unitários e de integração passando
+- [x] Servidor FastAPI respondendo e interface renderizando Quadtree, BFS Heatmaps, Time Travel e Telemetria
+- [x] `GUIA_DEFESA_GRUPO.md` revisado
 
 ## Parallelization Opportunities
 
