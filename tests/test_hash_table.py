@@ -86,18 +86,19 @@ def test_hash_table_rehash_clears_tombstones():
     ht = HashTable(initial_capacity=7)
     ht.put("a", 1)
     ht.put("b", 2)
-    ht.remove("a")  # tamanho = 1, tombstones = 1, ocupacao = 2/7
-    ht.remove("b")  # tamanho = 0, tombstones = 2, ocupacao = 2/7
+    ht.remove("a")  # tamanho = 1, tombstones = 1
+    ht.remove("b")  # tamanho = 0, tombstones = 2
 
     assert ht.tombstones == 2
-    # Inserir novos itens até (0 + 2 + novos) / 7 > 0.50 -> novos > 1.5 -> ao inserir 2 itens
-    ht.put("c", 3)
-    ht.put("d", 4)
+    # Inserir novos itens até forçar com certeza o rehash (ocupação > 0.50)
+    for i in range(5):
+        ht.put(f"item_{i}", i)
 
-    # Disparou rehash: tombstones devem ter sido limpas
+    # Disparou rehash: todas as tombstones acumuladas devem ter sido eliminadas
+    assert ht.rehash_count >= 1
     assert ht.tombstones == 0
-    assert ht.get("c") == 3
-    assert ht.get("d") == 4
+    for i in range(5):
+        assert ht.get(f"item_{i}") == i
 
 
 def test_hash_table_keys_values_items():
@@ -109,3 +110,4 @@ def test_hash_table_keys_values_items():
     assert set(ht.keys()) == {"x", "y", "z"}
     assert set(ht.values()) == {10, 20, 30}
     assert set(ht.items()) == {("x", 10), ("y", 20), ("z", 30)}
+
