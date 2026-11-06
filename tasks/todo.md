@@ -5,12 +5,12 @@
 **Description:** Configurar `requirements.txt` e implementar as entidades de domínio (`Incidente`, `Usuario`, `BoundingBox`, `TipoIncidente`) e os utilitários geodésicos (`haversine_meters` e `bounding_box_from_radius`) para a região de São Paulo (`lat: [-23.70, -23.45], lon: [-46.80, -46.45]`).
 
 **Acceptance criteria:**
-- [ ] `BoundingBox` suporta verificação de pertinência de ponto (`contains`) e interseção entre retângulos (`intersects`).
-- [ ] `haversine_meters` calcula a distância esférica exata em metros entre duas coordenadas GPS.
-- [ ] `Incidente` calcula seu nível de alerta dinâmico (`CRITICO`, `MODERADO`, `BAIXO`, `EXPIRADO`) com base no percentual de vida restante.
+- [x] `BoundingBox` suporta verificação de pertinência de ponto (`contains`) e interseção entre retângulos (`intersects`).
+- [x] `haversine_meters` calcula a distância esférica exata em metros entre duas coordenadas GPS.
+- [x] `Incidente` calcula seu nível de alerta dinâmico (`CRITICO`, `MODERADO`, `BAIXO`, `EXPIRADO`) com base no percentual de vida restante.
 
 **Verification:**
-- [ ] Tests pass: `pytest tests/test_quadtree.py -k "bounding_box or haversine"`
+- [x] Tests pass: `pytest tests/test_quadtree.py -k "bounding_box or haversine"`
 
 **Dependencies:** None
 
