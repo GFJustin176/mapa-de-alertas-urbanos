@@ -82,13 +82,13 @@
 **Description:** Implementar a `Quadtree` do zero (`capacity = 4`, `max_depth = 10`) centrada em São Paulo, com subdivisão automática em 4 quadrantes (`NW`, `NE`, `SW`, `SE`), busca espacial por raio (`query_radius` combinando poda de `BoundingBox` com filtro fino de `Haversine` e contadores de telemetria) e remoção com colapso (`_try_merge`) automático quando os 4 filhos folhas somam $\le 4$ pontos.
 
 **Acceptance criteria:**
-- [ ] Subdivide exatamente ao receber o 5º ponto até a profundidade máxima 10.
-- [ ] `query_radius(lat, lon, radius_m)` retorna exatamente os mesmos pontos que a busca linear $O(n)$, mas visitando uma fração dos nós e registrando `nodes_visited` e `distance_calculations`.
-- [ ] `remove(incidente_id, lat, lon)` remove o ponto e funde (colapsa) os 4 subquadrantes de volta no nó pai quando a soma de pontos dos irmãos cai para $\le 4$.
-- [ ] `get_all_Quadrants()` exporta os limites de todos os nós ativos para renderização visual no mapa.
+- [x] Subdivide exatamente ao receber o 5º ponto até a profundidade máxima 10.
+- [x] `query_radius(lat, lon, radius_m)` retorna exatamente os mesmos pontos que a busca linear $O(n)$, mas visitando uma fração dos nós e registrando `nodes_visited` e `distance_calculations`.
+- [x] `remove(incidente_id, lat, lon)` remove o ponto e funde (colapsa) os 4 subquadrantes de volta no nó pai quando a soma de pontos dos irmãos cai para $\le 4$.
+- [x] `get_all_Quadrants()` exporta os limites de todos os nós ativos para renderização visual no mapa.
 
 **Verification:**
-- [ ] Tests pass: `pytest tests/test_quadtree.py -v`
+- [x] Tests pass: `pytest tests/test_quadtree.py -v`
 
 **Dependencies:** Task 1
 
